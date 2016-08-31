@@ -9,7 +9,7 @@ def doRectOverlap(rect1, rect2):
             (isPointInsideRect(a.right, a.top, b)) or
             (isPointInsideRect(a.right, a.bottom, b))):
             return True
-        return False
+    return False
 
 def isPointInsideRect (x, y, rect):
     if (x > rect.left) and (x < rect.right) and (y > rect.top) and (y < rect.bottom):
@@ -24,12 +24,13 @@ mainClock = pygame.time.Clock()
 windownWidth = 500
 winddowHeight = 500
 windowSurface = pygame.display.set_mode((windownWidth, winddowHeight), 0, 32)
+pygame.display.set_caption('Collision Detection')
 
 #set up direction variables
 downLeft = 1
-downRight = 2
-upLeft = 3
-upRight = 4
+downRight = 3
+upLeft = 7
+upRight = 9
 
 moveSpeed = 1
 
@@ -63,59 +64,59 @@ while True:
         foods.append(pygame.Rect(random.randint(0, windownWidth - foodSize),
                  random.randint(0, winddowHeight - foodSize), foodSize,foodSize))
 
-windowSurface.fill(black)
+    windowSurface.fill(black)
 
-if bouncer['dir'] == downLeft:
-    bouncer['rect'].left -= moveSpeed
-    bouncer['rect'].top += moveSpeed
-
-if bouncer['dir'] == downRight:
-    bouncer['rect'].left += moveSpeed
-    bouncer['rect'].top += moveSpeed
-
-if bouncer['dir'] == upLeft:
-    bouncer['rect'].left -= moveSpeed
-    bouncer['rect'].top -= moveSpeed
-
-if bouncer['dir'] == upRight:
-    bouncer['rect'].left += moveSpeed
-    bouncer['rect'].top -= moveSpeed
-
-if bouncer['rect'].top <0:
-    if bouncer['dir'] == upLeft:
-        bouncer['dir'] = downLeft
-    if bouncer['dir'] ==  upRight:
-        bouncer['dir'] = downRight
-
-if bouncer['rect'].bottom > winddowHeight:
     if bouncer['dir'] == downLeft:
-        bouncer['dir'] = upLeft
-    if bouncer['dir'] == downRight:
-        bouncer['dir'] = upRight
+        bouncer['rect'].left -= moveSpeed
+        bouncer['rect'].top += moveSpeed
 
-if bouncer['rect'].left <0:
-    if bouncer['dir'] == downLeft:
-        bouncer['dir'] = downRight
+    if bouncer['dir'] == downRight:
+        bouncer['rect'].left += moveSpeed
+        bouncer['rect'].top += moveSpeed
+
     if bouncer['dir'] == upLeft:
-        bouncer['dir'] = upRight
+        bouncer['rect'].left -= moveSpeed
+        bouncer['rect'].top -= moveSpeed
 
-if bouncer['rect'].right > windownWidth:
-    if bouncer['dir'] == downRight:
-        bouncer['dir'] = downLeft
     if bouncer['dir'] == upRight:
-        bouncer['dir'] = upLeft
+        bouncer['rect'].left += moveSpeed
+        bouncer['rect'].top -= moveSpeed
 
-pygame.draw.rect(windowSurface, white, bouncer['rect'])
+    if bouncer['rect'].top <0:
+        if bouncer['dir'] == upLeft:
+            bouncer['dir'] = downLeft
+        if bouncer['dir'] ==  upRight:
+            bouncer['dir'] = downRight
 
-for food in foods[:]:
-    if doRectOverlap(bouncer['rect'], food):
-        foods.remove(food)
+    if bouncer['rect'].bottom > winddowHeight:
+        if bouncer['dir'] == downLeft:
+            bouncer['dir'] = upLeft
+        if bouncer['dir'] == downRight:
+            bouncer['dir'] = upRight
 
-for i in range(len(foods)):
-    pygame.draw.rect(windowSurface, green, foods[i])
+    if bouncer['rect'].left <0:
+        if bouncer['dir'] == downLeft:
+            bouncer['dir'] = downRight
+        if bouncer['dir'] == upLeft:
+            bouncer['dir'] = upRight
 
-pygame.display.update()
-mainClock.tick(45)
+    if bouncer['rect'].right > windownWidth:
+        if bouncer['dir'] == downRight:
+            bouncer['dir'] = downLeft
+        if bouncer['dir'] == upRight:
+            bouncer['dir'] = upLeft
+
+    pygame.draw.rect(windowSurface, white, bouncer['rect'])
+
+    for food in foods[:]:
+        if doRectOverlap(bouncer['rect'], food):
+            foods.remove(food)
+
+    for i in range(len(foods)):
+        pygame.draw.rect(windowSurface, green, foods[i])
+
+    pygame.display.update()
+    mainClock.tick(45)
 
 
 
